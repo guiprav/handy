@@ -26,9 +26,15 @@ sections.forEach(function (section) {
         return oldSection.id === section.id;
     });
 
-    fs.writeFileSync(section.path, section.data);
+    if(
+        !oldSection
+        || oldSection.path !== section.path
+        || oldSection.data !== section.data
+    ) {
+        fs.writeFileSync(section.path, section.data);
 
-    if(oldSection && oldSection.path !== section.path) {
-        fs.unlinkSync(oldSection.path);
+        if(oldSection && oldSection.path !== section.path) {
+            fs.unlinkSync(oldSection.path);
+        }
     }
 });
