@@ -9,8 +9,26 @@ let peg = require('pegjs');
 
 let parseCat = peg.buildParser(read(__dirname + '/cat.pegjs')).parse;
 
+let oldSections = (function () {
+    let oldPath = process.argv[2];
+
+    if(!oldPath) {
+        return null;
+    }
+
+    return parseCat(read(oldPath));
+})();
+
 let sections = parseCat(read('/dev/stdin'));
 
 sections.forEach(function (section) {
-    fs.writeFileSync(section.name, section.data);
+    let oldSection = (oldSections || []).find(function (oldSection) {
+        return oldSection.id === section.id;
+    });
+
+    fs.writeFileSync(section.path, section.data);
+
+    if(oldSection && oldSection.path !== section.path) {
+        fs.unlinkSync(oldSection.path);
+    }
 });

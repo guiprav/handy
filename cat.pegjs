@@ -9,8 +9,8 @@ section
     }
 
 sectionAttr
-  = id:id ' ' name:$((!' -%-' !'\n' .)+) {
-        return { id, name };
+  = id:id ' ' path:$((!' -%-' !'\n' .)+) {
+        return { id, path };
     }
 
 sectionData
