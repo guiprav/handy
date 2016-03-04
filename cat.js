@@ -10,7 +10,9 @@ process.argv.slice(2).forEach(function (path, i, paths) {
 
     let head = '-*- ' + path + ' -*-\n\n';
 
+    let body = fs.existsSync(path)? read(path) : '';
+
     let tail = !last? '\n' : '';
 
-    process.stdout.write(head + read(path) + tail);
+    process.stdout.write(head + body + tail);
 });
